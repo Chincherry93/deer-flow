@@ -18,7 +18,7 @@ import uuid
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.gateway.deps import get_checkpointer, get_store
 from deerflow.config.paths import Paths, get_paths
@@ -77,7 +77,8 @@ class ThreadSearchRequest(BaseModel):
 
 class ThreadStateResponse(BaseModel):
     """Response model for thread state."""
-
+    
+    model_config = ConfigDict(extra="ignore")  
     values: dict[str, Any] = Field(default_factory=dict, description="Current channel values")
     next: list[str] = Field(default_factory=list, description="Next tasks to execute")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Checkpoint metadata")
